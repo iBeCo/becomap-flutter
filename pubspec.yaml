@@ -37,7 +37,7 @@ dependencies:
   cupertino_icons: ^1.0.8
 
   # Becomap Flutter SDK package
-  becomap: ^1.1.0
+  becomap: ^2.0.0
 
   # Environment variables support
   flutter_dotenv: ^6.0.0

@@ -37,10 +37,10 @@ packages:
     dependency: "direct main"
     description:
       name: becomap
-      sha256: "242fcfec698cf09722f0ef7102807dfc5ceb6c3e5b99c8540928deb053e4a127"
+      sha256: f055a8e84f87d643eaad71f2c2d4672d99afa7e7b1d0607b284e9efe87322fb1
       url: "https://pub.dev"
     source: hosted
-    version: "1.1.0"
+    version: "2.0.0"
   boolean_selector:
     dependency: transitive
     description:

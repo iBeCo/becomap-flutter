@@ -267,7 +267,12 @@ class _MyHomePageState extends State<MyHomePage> {
       // Location details will be shown when onLocationsSelected callback is triggered
       await _mapViewKey.currentState?.selectLocation(location);
 
+      // 🚀 NEW: Focus on the selected location with smart defaults
+      // This provides a better user experience by automatically centering the map
+      await _mapViewKey.currentState?.focusTo(location);
+
       debugPrint('✅ Location selection initiated: ${location.name}');
+      debugPrint('🎯 Map focused on location with smart defaults');
       debugPrint(
         '📋 Location details will be shown via onLocationsSelected callback',
       );
@@ -656,8 +661,6 @@ class _MyHomePageState extends State<MyHomePage> {
 
                   // Current floor will be set via onGetCurrentFloor callback
                 });
-
-                // Initial floor viewport will be applied via onGetCurrentFloor callback
               },
               onViewChange: (viewOptions) {
                 // debugPrint('🗺️ View changed: $viewOptions');

@@ -203,7 +203,15 @@ class _MyHomePageState extends State<MyHomePage> {
       debugPrint('🗺️ Applying viewport for floor: ${floor.displayName}');
 
       // Convert the viewport data to BCViewOptions
-      final viewOptions = BCViewOptions.fromJson(floor.viewPort!);
+      final viewportData = floor.viewPort!;
+      final viewOptions = BCViewOptions(
+        center: viewportData['center'] != null
+            ? List<double>.from(viewportData['center'])
+            : null,
+        zoom: viewportData['zoom']?.toDouble(),
+        bearing: viewportData['bearing']?.toDouble(),
+        pitch: viewportData['pitch']?.toDouble(),
+      );
 
       // Validate viewport values before applying
       if (viewOptions.center == null || viewOptions.center!.length != 2) {
@@ -646,18 +654,10 @@ class _MyHomePageState extends State<MyHomePage> {
                   _isMapLoading = false;
                   _currentSite = site;
 
-                  // Get current floor from map view and set as selected floor
-                  final currentFloor = _mapViewKey.currentState
-                      ?.getCurrentFloor();
-                  _selectedFloor = currentFloor;
+                  // Current floor will be set via onGetCurrentFloor callback
                 });
 
-                // Apply initial floor's viewport configuration
-                final initialFloor = _mapViewKey.currentState
-                    ?.getCurrentFloor();
-                if (initialFloor != null) {
-                  _applyFloorViewport(initialFloor);
-                }
+                // Initial floor viewport will be applied via onGetCurrentFloor callback
               },
               onViewChange: (viewOptions) {
                 // debugPrint('🗺️ View changed: $viewOptions');

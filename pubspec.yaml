@@ -19,8 +19,8 @@ publish_to: 'none' # Remove this line if you wish to publish to pub.dev
 version: 1.0.0+1
 
 environment:
-  sdk: ^3.9.0
-  flutter: ">=3.27.0"
+  sdk: ^3.6.1
+  flutter: ">=3.27.2"
 
 # Dependencies specify other packages that your package needs in order to work.
 # To automatically upgrade your package dependencies to the latest versions
@@ -37,7 +37,7 @@ dependencies:
   cupertino_icons: ^1.0.8
 
   # Becomap Flutter SDK package
-  becomap: ^2.0.0
+  becomap: ^2.0.1
 
   # Environment variables support
   flutter_dotenv: ^6.0.0
@@ -54,7 +54,7 @@ dev_dependencies:
   flutter_lints: ^6.0.0
 
   # Splash screen generator
-  flutter_native_splash: ^2.4.1
+  flutter_native_splash: ^2.4.7
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec

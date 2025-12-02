@@ -20,7 +20,7 @@
     },
     {
       "name": "flutter_native_splash",
-      "version": "2.4.6",
+      "version": "2.4.7",
       "dependencies": [
         "ansicolor",
         "args",
@@ -69,7 +69,7 @@
     },
     {
       "name": "becomap",
-      "version": "2.0.0",
+      "version": "2.0.1",
       "dependencies": [
         "flutter",
         "webview_flutter"

@@ -1,5 +1,9 @@
 #!/bin/bash
 
+# BeCoMap Flutter iOS Runner Script
+# Automatically finds and runs on the latest iOS version available
+# Priority: iPhone 16 Pro (iOS 18.5) > iPhone 16 Pro (any iOS) > iPhone 15 Pro > Any iPhone
+
 # Set PATH to prioritize Homebrew binaries
 export PATH="/usr/local/bin:/usr/bin:/bin:$PATH"
 
@@ -8,33 +12,51 @@ unset GEM_HOME
 unset GEM_PATH
 unset RUBY_VERSION
 
-echo "🚀 Starting iOS Simulator setup..."
+echo "🚀 Starting iOS Simulator setup (targeting latest iOS version)..."
 
 # Function to find and boot simulator
 find_and_boot_simulator() {
     echo "🔍 Finding available iOS simulators..."
 
-    # Get iPhone 15 Pro UUID (first available)
-    IPHONE_15_PRO_UUID=$(xcrun simctl list devices | grep "iPhone 15 Pro" | grep -v "Max" | head -1 | grep -o '[A-F0-9-]\{36\}')
+    # Try to get iPhone 16 Pro with iOS 18.5 (latest) first
+    IPHONE_16_PRO_UUID=$(xcrun simctl list devices | grep -A 20 "iOS 18.5" | grep "iPhone 16 Pro" | grep -v "Max" | head -1 | grep -o '[A-F0-9-]\{36\}')
 
-    if [ -n "$IPHONE_15_PRO_UUID" ]; then
-        echo "📱 Found iPhone 15 Pro simulator: $IPHONE_15_PRO_UUID"
-        SIMULATOR_UUID=$IPHONE_15_PRO_UUID
-        SIMULATOR_NAME="iPhone 15 Pro"
+    if [ -n "$IPHONE_16_PRO_UUID" ]; then
+        echo "📱 Found iPhone 16 Pro (iOS 18.5) simulator: $IPHONE_16_PRO_UUID"
+        SIMULATOR_UUID=$IPHONE_16_PRO_UUID
+        SIMULATOR_NAME="iPhone 16 Pro"
     else
-        echo "⚠️  iPhone 15 Pro not found, looking for any iPhone simulator..."
-        # Fallback to first available iPhone simulator
-        IPHONE_UUID=$(xcrun simctl list devices | grep "iPhone" | head -1 | grep -o '[A-F0-9-]\{36\}')
+        # Fallback to iPhone 16 Pro with any iOS version
+        IPHONE_16_PRO_UUID=$(xcrun simctl list devices | grep "iPhone 16 Pro" | grep -v "Max" | head -1 | grep -o '[A-F0-9-]\{36\}')
 
-        if [ -n "$IPHONE_UUID" ]; then
-            SIMULATOR_NAME=$(xcrun simctl list devices | grep "$IPHONE_UUID" | sed 's/.*iPhone/iPhone/' | sed 's/ (.*//')
-            echo "📱 Found fallback iPhone simulator: $SIMULATOR_NAME ($IPHONE_UUID)"
-            SIMULATOR_UUID=$IPHONE_UUID
+        if [ -n "$IPHONE_16_PRO_UUID" ]; then
+            echo "📱 Found iPhone 16 Pro simulator: $IPHONE_16_PRO_UUID"
+            SIMULATOR_UUID=$IPHONE_16_PRO_UUID
+            SIMULATOR_NAME="iPhone 16 Pro"
         else
-            echo "❌ No iPhone simulators found!"
-            echo "Available simulators:"
-            xcrun simctl list devices | grep -E "iPhone|iPad"
-            exit 1
+            # Fallback to iPhone 15 Pro
+            IPHONE_15_PRO_UUID=$(xcrun simctl list devices | grep "iPhone 15 Pro" | grep -v "Max" | head -1 | grep -o '[A-F0-9-]\{36\}')
+
+            if [ -n "$IPHONE_15_PRO_UUID" ]; then
+                echo "📱 Found iPhone 15 Pro simulator: $IPHONE_15_PRO_UUID"
+                SIMULATOR_UUID=$IPHONE_15_PRO_UUID
+                SIMULATOR_NAME="iPhone 15 Pro"
+            else
+                echo "⚠️  Latest iPhone models not found, looking for any iPhone simulator..."
+                # Final fallback to first available iPhone simulator
+                IPHONE_UUID=$(xcrun simctl list devices | grep "iPhone" | head -1 | grep -o '[A-F0-9-]\{36\}')
+
+                if [ -n "$IPHONE_UUID" ]; then
+                    SIMULATOR_NAME=$(xcrun simctl list devices | grep "$IPHONE_UUID" | sed 's/.*iPhone/iPhone/' | sed 's/ (.*//')
+                    echo "📱 Found fallback iPhone simulator: $SIMULATOR_NAME ($IPHONE_UUID)"
+                    SIMULATOR_UUID=$IPHONE_UUID
+                else
+                    echo "❌ No iPhone simulators found!"
+                    echo "Available simulators:"
+                    xcrun simctl list devices | grep -E "iPhone|iPad"
+                    exit 1
+                fi
+            fi
         fi
     fi
 

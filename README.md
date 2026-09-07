@@ -32,6 +32,28 @@ Then run:
 flutter pub get
 ```
 
+## Configuration
+
+This SDK reads its credentials from a `.env` file at the project root. The file is
+git-ignored and **must never be committed** — but it is declared as a Flutter asset
+in `pubspec.yaml`, so the build will fail until you create it.
+
+```bash
+cp env.example .env
+```
+
+Then fill in the values supplied by Beco:
+
+| Variable | Description |
+| --- | --- |
+| `BECOMAP_CLIENT_ID` | Client ID issued by Beco |
+| `BECOMAP_CLIENT_SECRET` | Client secret issued by Beco — treat as a password |
+| `BECOMAP_SITE_IDENTIFIER` | Identifier of the site to load |
+
+Request credentials via [https://becomap.com/contact](https://becomap.com/contact).
+For CI and release builds, inject these as secrets from your build environment
+rather than checking a populated `.env` into source control.
+
 ## Usage
 
 ### Basic Usage
